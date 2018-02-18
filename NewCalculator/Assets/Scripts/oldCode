@@ -1,0 +1,70 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class Calculator : MonoBehaviour {
+    [SerializeField]
+    Text inputField;
+    string inputString;
+    int[] number = new int[2];
+    string operatorSymbol;
+    int i = 0;
+    bool displayedResult = false;
+    int result;
+    public void buttonPressed()
+    {
+        if (displayedResult == true)
+        {
+            inputField.text = "";
+            inputString = "";
+            displayedResult = false;
+        }
+        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+        string buttonValue = EventSystem.current.currentSelectedGameObject.name;
+        int arg;
+        string test = "";
+        inputString = inputString + buttonValue;
+        if (!(buttonValue == "+" || buttonValue == "-" || buttonValue == "="))
+        {
+            test = test + buttonValue;
+        }
+  
+        if (int.TryParse(test, out arg))
+        {
+            if (i > 1) i = 0;
+            number[i] = arg;
+            i++;
+        }
+        else
+        {
+            switch (buttonValue)
+            {
+                case "+":
+                    operatorSymbol = buttonValue;
+                    break;
+                case "-":
+                    operatorSymbol = buttonValue;
+                    break;
+                case "=":
+                    switch (operatorSymbol)
+                    {
+                        case "+":
+                            result = number[0] + number[1];
+                            break;
+                        case "-":
+                            result = number[0] - number[1];
+                            break;
+                    }
+                    displayedResult = true;
+                    inputString = result.ToString(); 
+                    number = new int[2];
+                    break;
+            }
+        }
+        
+       
+        inputField.text = inputString;
+    } 
+}
